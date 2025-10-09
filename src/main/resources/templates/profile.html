@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+    <link rel="stylesheet" href="/css/profileStyle.css">
+</head>
+<body>
+<div class="profile-container">
+    <h2>Мой профиль</h2>
+
+    <form th:action="@{/profile/save}" th:object="${userProfileDTO}" method="post" class="profile-form">
+        <label>Имя</label>
+        <input type="text" th:field="*{firstName}" required/>
+
+        <label>Фамилия</label>
+        <input type="text" th:field="*{lastName}" required/>
+
+        <label>Отчество</label>
+        <input type="text" th:field="*{middleName}" />
+
+        <label>Email</label>
+        <input type="email" th:field="*{email}" required/>
+
+        <label>Пароль (новый, если хотите изменить)</label>
+        <input type="password" th:field="*{password}" placeholder="Введите новый пароль"/>
+
+        <button type="submit" class="save-btn">Сохранить</button>
+    </form>
+
+    <form th:action="@{/profile/delete}" method="post">
+        <button type="submit" class="delete-btn">Удалить профиль</button>
+    </form>
+
+    <button th:href="@{/tasks}">⬅ Вернуться к задачам</button>
+</div>
+</body>
+</html>

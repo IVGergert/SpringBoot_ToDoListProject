@@ -1,0 +1,187 @@
+/* authStyle.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form-container {
+    background-color: #ffffff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: none;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.input-group input:focus {
+    border-color: #0078d4;
+}
+
+.input-group label {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    background-color: #fff;
+    padding: 0 4px;
+    color: #888;
+    font-size: 14px;
+    pointer-events: none;
+    transition: 0.2s ease all;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: -8px;
+    left: 10px;
+    font-size: 12px;
+    color: #444444;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 14px 12px;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-sizing: border-box;
+}
+
+button:hover {
+    background-color: #005fa3;
+}
+
+.link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.link a {
+    color: #0078d4;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.link a:hover {
+    text-decoration: underline;
+}
+
+.error,
+.success {
+    padding: 12px 16px;
+    border-radius: 20px;
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.error {
+    background-color: #e53935;
+    color: white;
+}
+
+.success {
+    background-color: #43a047;
+    color: white;
+}
+
+
+@media (max-width: 480px) {
+    .form-container {
+        padding: 30px 20px;
+        border-radius: 10px;
+        box-shadow: none;
+        max-width: 90%;
+        margin: 0 10px;
+    }
+
+    h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .input-group input {
+        padding: 12px 10px;
+        font-size: 15px;
+    }
+
+    .input-group label {
+        font-size: 13px;
+        left: 10px;
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+        top: -10px;
+        left: 8px;
+        font-size: 11px;
+    }
+
+    button {
+        padding: 12px 10px;
+        font-size: 15px;
+    }
+
+    .link {
+        font-size: 14px;
+    }
+
+    .error,
+    .success {
+        font-size: 14px;
+        padding: 10px 12px;
+        border-radius: 16px;
+        margin-bottom: 16px;
+    }
+}
+
