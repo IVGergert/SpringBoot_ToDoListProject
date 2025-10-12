@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои задачи</title>
+    <link rel="stylesheet" th:href="@{/css/taskStyle.css}">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📋 Мои задачи</h1>
+        <div class="nav-buttons">
+            <a class="btn btn-profile" th:href="@{/profile}">👤 Профиль</a>
+
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-logout">🚪 Выйти</button>
+            </form>
+        </div>
+    </div>
+
+    <form class="task-filter-form" method="get" th:action="@{/tasks}">
+        <input type="text" name="search" placeholder="🔍 Поиск..." th:value="${param.search}">
+        <select name="status">
+            <option value="">Все</option>
+            <option value="completed" th:selected="${param.status == 'completed'}">Выполненные</option>
+            <option value="active" th:selected="${param.status == 'active'}">В процессе</option>
+        </select>
+        <button class="btn btn-filter" type="submit">Фильтровать</button>
+    </form>
+
+    <a class="btn btn-create-task" onclick="openModal()">➕ Добавить задачу</a>
+
+    <ul class="task-list">
+        <li th:each="task : ${tasks}" class="task-item" th:classappend="${task.completed} ? 'completed'">
+            <div class="task-content">
+                <span class="task-title" th:text="${task.title}"></span>
+                <span class="task-description" th:text="${task.description}"></span>
+                <span class="task-deadline" th:if="${task.deadline}" th:text="'⏰ ' + ${#temporals.format(task.deadline, 'dd.MM.yyyy HH:mm')}"></span>
+            </div>
+            <div class="task-actions">
+                <form th:action="@{'/tasks/toggle/' + ${task.id}}" method="post">
+                    <button class="btn btn-toggle" type="submit">✅</button>
+                </form>
+                <form th:action="@{'/tasks/delete/' + ${task.id}}" method="post">
+                    <button class="btn btn-delete" type="submit">🗑️</button>
+                </form>
+            </div>
+        </li>
+    </ul>
+
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">×</span>
+            <h2>Новая задача</h2>
+
+            <form th:action="@{/tasks/create}" th:object="${taskDTO}" method="post" class="input-group">
+                <label>Название</label>
+                <input type="text" th:field="*{title}" placeholder="Введите название" required>
+                <div th:if="${#fields.hasErrors('title')}" class="error">
+                    <p th:errors="*{title}"></p>
+                </div>
+
+                <label>Описание</label>
+                <textarea th:field="*{description}" placeholder="Описание"></textarea>
+
+                <label>Дедлайн</label>
+                <input type="datetime-local" th:field="*{deadline}">
+
+                <button type="submit" class="btn btn-save">💾 Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+<script th:src="@{/js/tasks.js}"></script>
+
+</body>
+</html>

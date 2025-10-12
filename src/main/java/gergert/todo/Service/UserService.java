@@ -9,19 +9,25 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserProfileDTO getCurrentUserProfile() {
+    public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        auth.getName();
+
         String email = auth.getName();
-
-        User user = userRepository.findByEmail(email)
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+    }
 
+    public UserProfileDTO getCurrentUserProfile() {
+        User user = getCurrentUser();
         return new UserProfileDTO(
                 user.getFirstName(),
                 user.getLastName(),
@@ -31,33 +37,30 @@ public class UserService {
         );
     }
 
-    public void updateProfile(UserProfileDTO dto) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
+    public String updateProfile(UserProfileDTO dto) {
+        User currentUser = getCurrentUser();
+        currentUser.setFirstName(dto.getFirstName());
+        currentUser.setLastName(dto.getLastName());
+        currentUser.setMiddleName(dto.getMiddleName());
+        currentUser.setEmail(dto.getEmail());
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
-
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
-        user.setMiddleName(dto.getMiddleName());
-        user.setEmail(dto.getEmail());
-
-        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
-            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        if (userRepository.existsByEmail(currentUser.getEmail())) {
+            Optional<User> userWithEmail = userRepository.findByEmail(dto.getEmail());
+            if (userWithEmail.isPresent() && !userWithEmail.get().getId().equals(currentUser.getId())) {
+                return "Данный email занят другим пользователем. Придумайте пожалуйста другой";
+            }
         }
 
-        userRepository.save(user);
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            currentUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+
+        userRepository.save(currentUser);
+        return null;
     }
 
     public void deleteProfile() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
-
+        User user = getCurrentUser();
         userRepository.delete(user);
     }
-
 }

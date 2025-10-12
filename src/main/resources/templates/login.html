@@ -12,9 +12,15 @@
         Неверный логин или пароль!
     </div>
 
+    <div class="logout" th:if="${param.logout}">
+        Вы успешно вышли из аккаунта.
+    </div>
+
     <div class="success" th:if="${param.registered}">
         Регистрация прошла успешно. Теперь вы можете войти.
     </div>
+
+    <div class="success" th:if="${success}" th:text="${success}"></div>
 
     <h2>Вход</h2>
 

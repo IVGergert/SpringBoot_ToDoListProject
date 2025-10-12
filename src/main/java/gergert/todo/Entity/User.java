@@ -46,8 +46,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
 
-    private String fullName = firstName + " " + lastName;
-
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<Folder> folders = new HashSet<>();
+//    private List<Folder> folders;
 }
