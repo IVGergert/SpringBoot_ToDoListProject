@@ -63,7 +63,7 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #eef;
+    background: #f3ebeb;
     margin-bottom: 10px;
     padding: 12px 16px;
     border-radius: 10px;
@@ -94,12 +94,12 @@ h1 {
 
 .task-description {
     font-size: 14px;
-    color: #555;
+    color: #252525;
 }
 
 .task-deadline, .task-completedAt {
     font-size: 0.9em;
-    color: #666;
+    color: #252525;
 }
 
 .task-actions {
@@ -242,6 +242,14 @@ h1 {
 }
 
 .input-group input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.input-group textarea {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 10px;
