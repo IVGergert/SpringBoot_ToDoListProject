@@ -1,11 +1,14 @@
 package gergert.todo.Service;
 
-import gergert.todo.DTO.TaskDTO;
+import gergert.todo.DTO.Task.TaskAddDTO;
+import gergert.todo.DTO.Task.TaskUpdateDTO;
 import gergert.todo.Entity.Task;
 import gergert.todo.Entity.User;
 import gergert.todo.Repository.TaskRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,60 +17,89 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskService {
     private final TaskRepository taskRepository;
+    private final UserService userService;
 
-    public List<Task> getTasksByUser(User user) {
-        return taskRepository.findByUser(user);
-    }
+    public List<Task> getFilteredTasks(String status, String search) {
+        User currentUser = userService.getCurrentUser();
 
-    public List<Task> getFilteredTasks(User user, String status, String search) {
-        List<Task> tasks = taskRepository.findByUser(user);
+        boolean hasStatus = status != null && !status.isBlank();
+        boolean hasSearch = search != null && !search.isBlank();
 
-        if (search != null && !search.isBlank()) {
-            tasks = tasks.stream()
-                    .filter(t -> t.getTitle().toLowerCase().contains(search.toLowerCase()) ||
-                            (t.getDescription() != null && t.getDescription().toLowerCase().contains(search.toLowerCase())))
-                    .toList();
+        if (hasStatus && hasSearch) {
+            boolean completed = status.equalsIgnoreCase("completed");
+            return taskRepository.findByUserAndCompletedAndTitleContainingIgnoreCase(currentUser, completed, search);
         }
 
-        if ("completed".equals(status)) {
-            tasks = tasks.stream().filter(Task::isCompleted).toList();
-        } else if ("active".equals(status)) {
-            tasks = tasks.stream().filter(t -> !t.isCompleted()).toList();
+        if (hasStatus) {
+            boolean completed = status.equalsIgnoreCase("completed");
+            return taskRepository.findByUserAndCompleted(currentUser, completed);
         }
 
-        return tasks;
+        if (hasSearch) {
+            return taskRepository.findByUserAndTitleContainingIgnoreCase(currentUser, search);
+        }
+
+        return taskRepository.findByUser(currentUser);
     }
 
-    public Task createTask(TaskDTO dto, User user) {
+    public Task getTaskById(Long id) {
+        User currentUser = userService.getCurrentUser();
+        return taskRepository.findByIdAndUser(id, currentUser)
+                .orElseThrow(() -> new EntityNotFoundException("Задача не найдена"));
+    }
+
+    @Transactional
+    public Task createTask(TaskAddDTO dto) {
+        User currentUser = userService.getCurrentUser();
+
         Task task = Task.builder()
                 .title(dto.getTitle())
                 .description(dto.getDescription())
                 .completed(dto.isCompleted())
                 .deadline(dto.getDeadline())
-                .user(user)
+                .user(currentUser)
                 .build();
+
         return taskRepository.save(task);
     }
 
-    public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
-    }
+    @Transactional
+    public Task updateTask(Long id, TaskUpdateDTO dto) {
+        Task task = getTaskById(id);
 
-    public Task getById(Long id) {
-        return taskRepository.findById(id).orElse(null);
-    }
+        task.setTitle(dto.getTitle());
+        task.setDescription(dto.getDescription());
+        task.setDeadline(dto.getDeadline());
 
-    public void toggleComplete(Task task) {
-        boolean nowCompleted = !task.isCompleted();
-        task.setCompleted(nowCompleted);
-
-        if (nowCompleted) {
-            task.setCompletedAt(LocalDateTime.now());
-        } else {
-            task.setCompletedAt(null);
+        if (task.isCompleted() != dto.isCompleted()) {
+            task.setCompleted(dto.isCompleted());
+            task.setCompletedAt(dto.isCompleted() ? LocalDateTime.now() : null);
         }
+
+        return taskRepository.save(task);
+    }
+
+    @Transactional
+    public void deleteTask(Long id) {
+        User currentUser = userService.getCurrentUser();
+
+        Task task = taskRepository.findByIdAndUser(id, currentUser)
+                .orElseThrow(() -> new EntityNotFoundException("Задача не найдена"));
+
+        taskRepository.delete(task);
+    }
+
+    @Transactional
+    public void toggleComplete(Long id) {
+        User currentUser = userService.getCurrentUser();
+        Task task = taskRepository.findByIdAndUser(id, currentUser)
+                .orElseThrow(() -> new EntityNotFoundException("Задача не найдена"));
+
+        task.setCompleted(!task.isCompleted());
+        task.setCompletedAt(task.isCompleted() ? LocalDateTime.now() : null);
 
         taskRepository.save(task);
     }
+
 
 }

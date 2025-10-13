@@ -1,7 +1,7 @@
 package gergert.todo.Controller;
 
-import gergert.todo.DTO.RegisterUserDTO;
-import gergert.todo.DTO.UserLoginDTO;
+import gergert.todo.DTO.User.RegisterUserDTO;
+import gergert.todo.DTO.User.UserLoginDTO;
 import gergert.todo.Service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

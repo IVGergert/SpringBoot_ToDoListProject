@@ -27,13 +27,11 @@ public class Task {
     @Column(length = 1000)
     private String description;
 
-    private boolean completed = false;
+    private boolean completed;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-
 
     @CreationTimestamp
     @Column(updatable = false)

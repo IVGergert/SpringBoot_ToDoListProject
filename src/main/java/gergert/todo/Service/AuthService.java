@@ -1,6 +1,6 @@
 package gergert.todo.Service;
 
-import gergert.todo.DTO.RegisterUserDTO;
+import gergert.todo.DTO.User.RegisterUserDTO;
 import gergert.todo.Entity.Role;
 import gergert.todo.Entity.User;
 import gergert.todo.Repository.UserRepository;

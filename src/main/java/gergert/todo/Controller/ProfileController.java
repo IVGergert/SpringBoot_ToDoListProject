@@ -1,6 +1,6 @@
 package gergert.todo.Controller;
 
-import gergert.todo.DTO.UserProfileDTO;
+import gergert.todo.DTO.User.UserProfileDTO;
 import gergert.todo.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

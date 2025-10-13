@@ -1,6 +1,6 @@
 package gergert.todo.Service;
 
-import gergert.todo.DTO.UserProfileDTO;
+import gergert.todo.DTO.User.UserProfileDTO;
 import gergert.todo.Entity.User;
 import gergert.todo.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -19,24 +20,27 @@ public class UserService {
 
     public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        auth.getName();
 
         String email = auth.getName();
+
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
     }
 
     public UserProfileDTO getCurrentUserProfile() {
-        User user = getCurrentUser();
+        User currentUser = getCurrentUser();
+
         return new UserProfileDTO(
-                user.getFirstName(),
-                user.getLastName(),
-                user.getMiddleName(),
-                user.getEmail(),
-                null
+                currentUser.getFirstName(),
+                currentUser.getLastName(),
+                currentUser.getMiddleName(),
+                currentUser.getEmail(),
+                null,
+                currentUser.getCreatedAt()
         );
     }
 
+    @Transactional
     public String updateProfile(UserProfileDTO dto) {
         User currentUser = getCurrentUser();
         currentUser.setFirstName(dto.getFirstName());
@@ -59,6 +63,7 @@ public class UserService {
         return null;
     }
 
+    @Transactional
     public void deleteProfile() {
         User user = getCurrentUser();
         userRepository.delete(user);
