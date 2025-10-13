@@ -1,4 +1,3 @@
-
 function openModal(){
     const modal = document.getElementById("taskModal");
 
@@ -19,13 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("taskModal");
     const modalContent = document.getElementById("taskModalContent");
 
-    // Esc
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeTaskModal();
+        if (e.key === "Escape") closeModal();
     });
 
-    // Клик вне окна
     modal.addEventListener("click", (e) => {
-        if (!modalContent.contains(e.target)) closeTaskModal();
+        if (!modalContent.contains(e.target)) closeModal();
     });
 });

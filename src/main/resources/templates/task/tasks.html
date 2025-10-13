@@ -45,7 +45,7 @@
                     <button class="btn btn-toggle" type="submit">✅</button>
                 </form>
 
-                <form th:action="@{'/tasks/delete/' + ${task.id}}" method="post">
+                <form th:action="@{'/tasks/delete/' + ${task.id}}" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить задачу? Это действие необратимо.')">
                     <button class="btn btn-delete" type="submit">🗑️</button>
                 </form>
 

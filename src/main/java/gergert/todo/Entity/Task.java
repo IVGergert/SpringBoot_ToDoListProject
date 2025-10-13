@@ -33,8 +33,6 @@ public class Task {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-
-
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
