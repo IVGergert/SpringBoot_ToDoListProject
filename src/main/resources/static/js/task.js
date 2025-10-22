@@ -1,46 +1,31 @@
-function openAddModal() {
-    document.getElementById('taskModal').style.display = 'flex';
-}
 
-function openEditModal() {
-    document.getElementById('editModal').style.display = 'flex';
-}
+function openModal(){
+    const modal = document.getElementById("taskModal");
 
-function closeAddModal() {
-    document.getElementById('taskModal').style.display = 'none';
-}
-
-function closeEditModal() {
-    document.getElementById('editModal').style.display = 'none';
-
-}
-
-window.onclick = function(event) {
-    const modal = document.getElementById('taskModal');
-    const editModal = document.getElementById('editModal');
-    if (event.target === modal) {
-        closeAddModal();
-    }
-
-    if (event.target === editModal) {
-        closeEditModal();
+    if (modal) {
+        modal.style.display = "flex";
     }
 }
 
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        closeAddModal();
-        closeEditModal();
-    }
-});
+function closeModal(){
+    const modal = document.getElementById("taskModal");
 
-document.addEventListener('DOMContentLoaded', () => {
-    const showModal = document.body.getAttribute('data-show-add-modal') === 'true';
-    const showEditModal = document.body.getAttribute('data-show-edit-modal') === 'true';
-
-    if (showModal) {
-        openAddModal();
-    } else if (showEditModal) {
-        openEditModal();
+    if (modal) {
+        modal.style.display = "none";
     }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("taskModal");
+    const modalContent = document.getElementById("taskModalContent");
+
+    // Esc
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeTaskModal();
+    });
+
+    // Клик вне окна
+    modal.addEventListener("click", (e) => {
+        if (!modalContent.contains(e.target)) closeTaskModal();
+    });
 });
