@@ -1,7 +1,6 @@
 package gergert.todo.Controller;
 
 import gergert.todo.DTO.Task.TaskAddDTO;
-import gergert.todo.DTO.Task.TaskDTO;
 import gergert.todo.DTO.Task.TaskUpdateDTO;
 import gergert.todo.Entity.Task;
 import gergert.todo.Service.TaskService;
@@ -38,13 +37,13 @@ public class TaskController {
             model.addAttribute("taskUpdateDTO", new TaskUpdateDTO());
         }
 
-        return "task/tasks";
+        return "tasks";
     }
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("taskDTO", new TaskAddDTO());
-        return "task/tasks";
+        return "tasks";
     }
 
     @PostMapping("/create")
@@ -58,8 +57,8 @@ public class TaskController {
             List<Task> tasks = taskService.getFilteredTasks(status, search);
             model.addAttribute("tasks", tasks);
             model.addAttribute("taskDTO", new TaskAddDTO());
-            model.addAttribute("showModal", true);
-            return "task/tasks";
+            model.addAttribute("showAddModal", true);
+            return "tasks";
         }
 
         taskService.createTask(taskDTO);
@@ -96,7 +95,7 @@ public class TaskController {
         model.addAttribute("tasks", taskService.getFilteredTasks(null, null));
         model.addAttribute("showEditModal", true);
 
-        return "task/tasks";
+        return "tasks";
     }
 
     @PostMapping("/edit/{id}")
@@ -109,7 +108,7 @@ public class TaskController {
             model.addAttribute("taskId", id);
             model.addAttribute("tasks", taskService.getFilteredTasks(null, null));
             model.addAttribute("showEditModal", true);
-            return "task/tasks";
+            return "tasks";
         }
 
         taskService.updateTask(id, dto);

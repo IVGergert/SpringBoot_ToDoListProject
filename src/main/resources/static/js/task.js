@@ -1,31 +1,48 @@
-
-function openModal(){
-    const modal = document.getElementById("taskModal");
-
-    if (modal) {
-        modal.style.display = "flex";
-    }
+function openAddModal() {
+    document.getElementById("addTaskModal").style.display = 'flex';
 }
 
-function closeModal(){
-    const modal = document.getElementById("taskModal");
+function closeAddModal() {
+    document.getElementById("addTaskModal").style.display = "none";
+}
 
-    if (modal) {
-        modal.style.display = "none";
-    }
+function openEditModal() {
+    document.getElementById("editTaskModal").style.display = 'flex';
+}
+
+function closeEditModal() {
+    document.getElementById("editTaskModal").style.display = "none";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const modal = document.getElementById("taskModal");
-    const modalContent = document.getElementById("taskModalContent");
+    const addModal = document.getElementById("addTaskModal");
+    const editModal = document.getElementById("editTaskModal");
 
-    // Esc
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeTaskModal();
+        if (e.key === "Escape") {
+            closeAddModal();
+            closeEditModal();
+        }
     });
 
-    // Клик вне окна
-    modal.addEventListener("click", (e) => {
-        if (!modalContent.contains(e.target)) closeTaskModal();
+    window.addEventListener("click", (event) => {
+        if (event.target === addModal) {
+            closeAddModal();
+        }
+
+        if (event.target === editModal) {
+            closeEditModal();
+        }
     });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const showAddModal = document.body.getAttribute('data-show-add-modal') === 'true';
+    const showEditModal = document.body.getAttribute('data-show-edit-modal') === 'true';
+
+    if (showAddModal) {
+        openAddModal();
+    } else if (showEditModal) {
+        openEditModal();
+    }
 });
