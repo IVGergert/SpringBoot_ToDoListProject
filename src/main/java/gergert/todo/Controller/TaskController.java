@@ -94,6 +94,7 @@ public class TaskController {
         model.addAttribute("taskId", id);
         model.addAttribute("tasks", taskService.getFilteredTasks(null, null));
         model.addAttribute("showEditModal", true);
+        model.addAttribute("showAddModal", false);
 
         return "tasks";
     }

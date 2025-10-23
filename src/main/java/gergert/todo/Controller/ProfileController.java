@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -23,23 +24,28 @@ public class ProfileController {
     }
 
     @PostMapping("/profile/save")
-    public String saveProfile(@ModelAttribute("userProfileDTO") UserProfileDTO dto, Model model) {
+    public String saveProfile(@ModelAttribute("userProfileDTO") UserProfileDTO dto,
+                              @RequestParam(value = "newPassword", required = false) String newPassword,
+                              RedirectAttributes redirectAttributes) {
+
+        if (newPassword != null && !newPassword.trim().isEmpty()) {
+            dto.setPassword(newPassword);
+        } else {
+            dto.setPassword(null);
+        }
+
         String errorMessage = userService.updateProfile(dto);
 
         if (errorMessage != null) {
-            model.addAttribute("error", errorMessage);
-            model.addAttribute("userProfileDTO", dto);
-            return "profile";
+            redirectAttributes.addFlashAttribute("error", errorMessage);
+            return "redirect:/profile";
         }
 
-        model.addAttribute("success", "Профиль успешно обновлён");
-        model.addAttribute("userProfileDTO", userService.getCurrentUserProfile());
+        redirectAttributes.addFlashAttribute("success", "Профиль успешно обновлён");
 
-        userService.updateProfile(dto);
-        return "profile";
+        return "redirect:/profile";
     }
 
-    // Удалить профиль
     @PostMapping("/profile/delete")
     public String deleteProfile(RedirectAttributes redirectAttributes) {
         userService.deleteProfile();

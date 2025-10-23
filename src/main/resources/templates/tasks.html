@@ -23,16 +23,16 @@
         <input type="text" name="search" placeholder="Поиск..." th:value="${param.search}">
 
         <div class="task-tabs">
-            <button type="submit" name="status" value="" class=""
-                    th:classappend="${param.status == null or param.status == ''} ? 'active' : ''"> Все
+            <button type="submit" name="status" value=""
+                    th:classappend="${status == null or status == ''} ? 'active' : ''"> Все
             </button>
 
-            <button type="submit" name="status" value="completed" class="button"
-                    th:classappend="${param.status == 'completed'} ? 'active' : ''"> Выполненные
+            <button type="submit" name="status" value="completed"
+                    th:classappend="${status == 'completed'} ? 'active' : ''"> Выполненные
             </button>
 
-            <button type="submit" name="status" value="active" class="button"
-                    th:classappend="${param.status == 'active'} ? 'active' : ''"> В процессе
+            <button type="submit" name="status" value="active"
+                    th:classappend="${status == 'active'} ? 'active' : ''"> В процессе
             </button>
         </div>
     </form>
@@ -42,18 +42,27 @@
     <ul class="task-list">
         <li th:each="task : ${tasks}" class="task-item" th:classappend="${task.completed} ? 'completed'">
 
+            <form th:action="@{'/tasks/toggle/' + ${task.id}}" method="post" class="checkbox-form">
+                <label class="custom-checkbox">
+                    <input type="checkbox" th:checked="${task.completed}">
+                    <span class="checkmark"></span>
+                </label>
+            </form>
+
             <div class="task-content">
                 <span class="task-title" th:text="${task.title}"></span>
                 <span class="task-description" th:text="${task.description}"></span>
+
+                <div class="task-status"
+                     th:text="${task.completed} ? '✅ Выполнена' : '🔄 В процессе'"
+                     th:classappend="${task.completed} ? 'status-completed' : 'status-active'">
+                </div>
+
                 <span class="task-deadline" th:if="${task.deadline}" th:text="'Дедлайн: ' + ${#temporals.format(task.deadline, 'dd.MM.yyyy HH:mm')}"></span>
                 <span class="task-create" th:if="${task.createdAt}" th:text="'Создано: ' + ${#temporals.format(task.createdAt, 'dd.MM.yyyy HH:mm')}"></span>
             </div>
 
             <div class="task-actions">
-
-                <form th:action="@{'/tasks/toggle/' + ${task.id}}" method="post">
-                    <button class="btn btn-toggle" type="submit">✅</button>
-                </form>
 
                 <a th:href="@{'/tasks/edit/' + ${task.id}}" class="btn btn-edit" onclick="openEditModal()">✎</a>
 
@@ -113,7 +122,7 @@
                 <label>Дедлайн</label>
                 <input type="datetime-local" th:field="*{deadline}">
 
-                <div class="checkbox-group">
+                <div class="checkbox-groupe">
                     <label>
                         <input type="checkbox" th:field="*{completed}"> Выполнено
                     </label>

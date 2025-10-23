@@ -36,6 +36,7 @@ public class UserService {
                 currentUser.getMiddleName(),
                 currentUser.getEmail(),
                 null,
+                currentUser.getBirthday(),
                 currentUser.getCreatedAt()
         );
     }
@@ -43,10 +44,6 @@ public class UserService {
     @Transactional
     public String updateProfile(UserProfileDTO dto) {
         User currentUser = getCurrentUser();
-        currentUser.setFirstName(dto.getFirstName());
-        currentUser.setLastName(dto.getLastName());
-        currentUser.setMiddleName(dto.getMiddleName());
-        currentUser.setEmail(dto.getEmail());
 
         if (userRepository.existsByEmail(currentUser.getEmail())) {
             Optional<User> userWithEmail = userRepository.findByEmail(dto.getEmail());
@@ -54,6 +51,11 @@ public class UserService {
                 return "Данный email занят другим пользователем. Придумайте пожалуйста другой";
             }
         }
+
+        currentUser.setFirstName(dto.getFirstName());
+        currentUser.setLastName(dto.getLastName());
+        currentUser.setMiddleName(dto.getMiddleName());
+        currentUser.setEmail(dto.getEmail());
 
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
             currentUser.setPassword(passwordEncoder.encode(dto.getPassword()));

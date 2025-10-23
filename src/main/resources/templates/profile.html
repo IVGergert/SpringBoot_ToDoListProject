@@ -8,35 +8,94 @@
 <body>
 <div class="profile-container">
 
-    <h2>Мой профиль</h2>
+    <h2>Профиль пользователя</h2>
 
     <div class="error" th:if="${error}" th:text="${error}"></div>
     <div class="success" th:if="${success}" th:text="${success}"></div>
 
     <form th:action="@{/profile/save}" th:object="${userProfileDTO}" method="post" class="profile-form">
-        <label>Имя</label>
-        <input type="text" th:field="*{firstName}" required/>
+        <div class="section">
+            <div class="divider"></div>
 
-        <label>Фамилия</label>
-        <input type="text" th:field="*{lastName}" required/>
+            <div class="field-row">
+                <div class="field-group">
+                    <label>Имя</label>
+                    <input type="text" th:field="*{firstName}" required/>
+                </div>
+                <div class="field-group">
+                    <label>Фамилия</label>
+                    <input type="text" th:field="*{lastName}" required/>
+                </div>
+            </div>
 
-        <label>Отчество</label>
-        <input type="text" th:field="*{middleName}" />
+            <div class="field-group">
+                <label>Отчество</label>
+                <input type="text" th:field="*{middleName}"/>
+            </div>
+        </div>
 
-        <label>Email</label>
-        <input type="email" th:field="*{email}" required/>
+        <div class="section">
+            <div class="field-group">
+                <label>Email</label>
+                <input type="email" th:field="*{email}" required/>
+            </div>
+        </div>
 
-        <label>Пароль (новый, если хотите изменить)</label>
-        <input type="password" th:field="*{password}" placeholder="Введите новый пароль"/>
+        <div class="section">
+            <label>Пароль</label>
 
-        <button type="submit" class="save-btn">Сохранить</button>
+            <!-- Поле с точками и кнопкой "Изменить" -->
+            <div class="password-container" id="password-display">
+                <input type="password" value="••••••••" readonly>
+                <button type="button" class="edit-btn" onclick="toggleEdit()">Изменить</button>
+            </div>
+
+            <!-- Блок для нового пароля (скрыт по умолчанию) -->
+            <div id="new-password-block" style="display: none;">
+                <div class="new-password-input-container">
+                    <input type="password" id="new-password" name="newPassword" placeholder="Введите новый пароль">
+                    <button type="button" class="eye-btn" onclick="togglePasswordVisibility()">👁️</button>
+                </div>
+                <button type="button" class="cancel-btn" onclick="toggleEdit()">Отмена</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="field-row">
+                <div class="field-group">
+                    <label>День рождения</label>
+                    <input type="date" th:field="*{birthday}">
+                </div>
+                <div class="field-group">
+                    <label>Дата создания</label>
+                    <input type="text"
+                           th:value="${#temporals.format(userProfileDTO.dateCreated, 'dd.MM.yyyy HH:mm:ss')}"
+                           readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="actions-container">
+            <a th:href="@{/tasks}" class="back-btn">⬅ Назад</a>
+
+            <div class="right-buttons">
+                <form th:action="@{/profile/delete}" method="post"
+                      onsubmit="return confirm('Вы уверены, что хотите удалить аккаунт? Это действие необратимо.')"
+                      style="display: inline-block; margin: 0;">
+                    <button type="submit" class="delete-btn">Удалить профиль</button>
+                </form>
+
+                <button type="submit" class="save-btn">Сохранить</button>
+            </div>
+        </div>
     </form>
 
-    <form th:action="@{/profile/delete}" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить аккаунт? Это действие необратимо.')">
-        <button type="submit" class="delete-btn">Удалить профиль</button>
-    </form>
 
-    <a th:href="@{/tasks}" class="back-btn">⬅ Вернуться к задачам</a>
 </div>
+
+<script th:src="@{/js/profile.js}"></script>
+
 </body>
 </html>
