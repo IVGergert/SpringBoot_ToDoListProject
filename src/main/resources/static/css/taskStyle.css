@@ -121,7 +121,7 @@ h1 {
     background: #dfe6e9;
 }
 
-.task-tabs .active {
+.task-tabs button.active {
     background: linear-gradient(135deg, #0984e3, #74b9ff);
     color: #fff;
     box-shadow: 0 4px 12px rgba(9, 132, 227, 0.3);

@@ -23,16 +23,16 @@
         <input type="text" name="search" placeholder="Поиск..." th:value="${param.search}">
 
         <div class="task-tabs">
-            <button type="submit" name="status" value="" class=""
-                    th:classappend="${param.status == null or param.status == ''} ? 'active' : ''"> Все
+            <button type="submit" name="status" value=""
+                    th:classappend="${status == null or status == ''} ? 'active' : ''"> Все
             </button>
 
-            <button type="submit" name="status" value="completed" class="button"
-                    th:classappend="${param.status == 'completed'} ? 'active' : ''"> Выполненные
+            <button type="submit" name="status" value="completed"
+                    th:classappend="${status == 'completed'} ? 'active' : ''"> Выполненные
             </button>
 
-            <button type="submit" name="status" value="active" class="button"
-                    th:classappend="${param.status == 'active'} ? 'active' : ''"> В процессе
+            <button type="submit" name="status" value="active"
+                    th:classappend="${status == 'active'} ? 'active' : ''"> В процессе
             </button>
         </div>
     </form>
