@@ -124,10 +124,9 @@ h1 {
 .task-tabs button.active {
     background: linear-gradient(135deg, #0984e3, #74b9ff);
     color: #fff;
-    box-shadow: 0 4px 12px rgba(9, 132, 227, 0.3);
 }
 
-/* Список задач */
+/* Список задач и параметры*/
 .task-list {
     list-style: none;
     padding: 0;
@@ -149,7 +148,6 @@ h1 {
 
 .task-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
 }
 
 .task-item.completed  {
@@ -193,19 +191,23 @@ h1 {
     flex-shrink: 0;
 }
 
+
+
+/* Кнопки для управления задачами */
 .btn-edit {
-    background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
-    color: #2d3436;
+    font-size: 16px;
+    color: #fff;
+    border-radius: 6px;
+    padding: 10px 20px;
+    border: 1px solid #6d6d6d;
 }
 
 .btn-delete {
-    background: linear-gradient(135deg, #e17055, #fab1a0);
+    font-size: 16px;
     color: #fff;
-}
-
-.btn-toggle {
-    background: linear-gradient(135deg, #74b9ff, #a29bfe);
-    color: white;
+    border-radius: 6px;
+    padding: 10px 20px;
+    border: 1px solid #f80a2d;
 }
 
 .btn-save {
@@ -213,6 +215,7 @@ h1 {
     color: white;
     margin-top: 10px;
 }
+
 
 /* ====== Модальные окна ====== */
 .modal {
@@ -253,6 +256,11 @@ h1 {
     color: #000;
 }
 
+
+
+
+/* Поля для ввода */
+
 .input-group {
     display: flex;
     flex-direction: column;
@@ -279,6 +287,7 @@ h1 {
     outline: none;
 }
 
+/* Ошибка */
 .error {
     color: #d63031;
     font-size: 13px;
@@ -310,6 +319,76 @@ h1 {
 }
 
 
+/* Группа кнопок */
+.actions-buttons {
+    justify-content: space-between;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Чекбокс */
+
+.custom-checkbox {
+    display: inline-block;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+}
+
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    border: 2px solid #ddd;
+}
+
+.custom-checkbox:hover input ~ .checkmark {
+    background-color: #ccc;
+    border-color: #bbb;
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+    background-color: #2196F3;
+    border-color: #2196F3;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.custom-checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-form {
+    display: inline-block;
+}
 
 
 

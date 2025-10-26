@@ -29,8 +29,8 @@ public class TaskController {
         model.addAttribute("tasks",tasks);
         model.addAttribute("status", status);
 
-        if (!model.containsAttribute("taskDTO")) {
-            model.addAttribute("taskDTO", new TaskAddDTO());
+        if (!model.containsAttribute("taskAddDTO")) {
+            model.addAttribute("taskAddDTO", new TaskAddDTO());
         }
 
         if (!model.containsAttribute("taskUpdateDTO")) {

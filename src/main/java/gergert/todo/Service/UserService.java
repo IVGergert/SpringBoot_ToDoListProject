@@ -56,6 +56,7 @@ public class UserService {
         currentUser.setLastName(dto.getLastName());
         currentUser.setMiddleName(dto.getMiddleName());
         currentUser.setEmail(dto.getEmail());
+        currentUser.setBirthday(dto.getBirthday());
 
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
             currentUser.setPassword(passwordEncoder.encode(dto.getPassword()));

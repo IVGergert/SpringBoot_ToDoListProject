@@ -42,6 +42,7 @@ public class User {
     private LocalDateTime createdAt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @Column(name = "last_login")
     private LocalDateTime lastLogin;
 
     @Column(nullable = false)

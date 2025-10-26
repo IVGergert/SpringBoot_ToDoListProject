@@ -39,9 +39,9 @@ public class ProfileController {
         if (errorMessage != null) {
             redirectAttributes.addFlashAttribute("error", errorMessage);
             return "redirect:/profile";
+        } else {
+            redirectAttributes.addFlashAttribute("success", "Профиль успешно обновлён");
         }
-
-        redirectAttributes.addFlashAttribute("success", "Профиль успешно обновлён");
 
         return "redirect:/profile";
     }
