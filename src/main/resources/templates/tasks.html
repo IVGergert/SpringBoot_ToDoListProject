@@ -117,7 +117,7 @@
             <span class="closeModal" onclick="closeEditModal()">×</span>
             <h2>Редактировать задачу</h2>
 
-            <form id = "editTaskFrom" th:action="@{'/tasks/edit/' + ${taskId}}" th:object="${taskUpdateDTO}" method="post" class="input-group">
+            <form id = "editTaskForm" th:action="@{'/tasks/edit/' + ${taskId}}" th:object="${taskUpdateDTO}" method="post" class="input-group">
 
                 <label>Название</label>
                 <input type="text" th:field="*{title}" placeholder="Введите название" required>
@@ -144,7 +144,7 @@
                     </button>
                 </form>
 
-                <button type="submit" form="editTaskFrom" class="btn btn-save">Сохранить изменения</button>
+                <button type="submit" form="editTaskForm" class="btn btn-save">Сохранить изменения</button>
             </div>
         </div>
     </div>
